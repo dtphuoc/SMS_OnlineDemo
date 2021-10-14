@@ -1,0 +1,103 @@
+﻿@model SMS_OnlineDemo.Models.User
+
+@{
+    Layout = null;
+}
+
+<head>
+    <link href="@Url.Content("~/Content/mycss.css")" rel="stylesheet" type="text/css" />
+
+</head>
+
+
+<div class="row justify-content-md-center">
+    <div class="login-box" style="top:7cm">
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+        {
+            //@Html.ValidationSummary()
+            @Html.AntiForgeryToken()
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h1 style="color:white">Register</h1>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <div class="user-box">
+                            <div class="user-box">
+                                <select class="form-control" id="Gender" name="Gender">
+                                    <option>Select Gender</option>
+                                    <option value="True">Male</option>
+                                    <option value="False">Female</option>
+                                </select>
+                                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="user-box">
+                                <div class="user-box">
+                                    <select class="form-control" id="WorkStatus" name="WorkStatus" style="">
+                                        <option>Select status</option>
+                                        <option value="True">Student</option>
+                                        <option value="False">Employees</option>
+                                    </select>
+                                    @Html.ValidationMessageFor(model => model.WorkStatus, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-box">
+                            @*@Html.LabelFor(m => m.UserName)*@
+                            @Html.TextBoxFor(m => m.UserName, "", new { @class = "form-control", @placeholder = "User Name" })
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="user-box">
+                            @*@Html.LabelFor(m => m.PassWord)*@
+                            @Html.PasswordFor(m => m.PassWord, new { @class = "form-control", @placeholder = "PassWord" })
+                            @Html.ValidationMessageFor(m => m.PassWord, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="user-box">
+                            @*@Html.LabelFor(m => m.ConfirmPassword)*@
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "ConfirmPassword" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="user-box">
+                            @*@Html.LabelFor(m => m.Address)*@
+                            @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Address" })
+                            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="user-box">
+                            @*@Html.LabelFor(m => m.Email)*@
+                            @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", @placeholder = "Email" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
+                            @if (ViewBag.error != null)
+                            {
+                                <span class="badge badge-danger">@ViewBag.error</span>
+                            }
+                        </div>
+
+                        <div class="user-box">
+                            @*@Html.LabelFor(model => model.DOB, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                            <div class="user-box">
+                                @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" name="submit" class="login-btn" value="Register" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
