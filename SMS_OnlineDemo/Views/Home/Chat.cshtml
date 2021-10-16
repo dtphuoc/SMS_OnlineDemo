@@ -5,9 +5,20 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<h2>Chat</h2>
+<head>
+    <meta http-equiv="refresh" content="30" />
+</head>
 
-<table style="width:100%;">
+<h2>Chat</h2>
+<script type="text/javascript">
+function timedRefresh(timeoutPeriod) {
+    setTimeout(function() {
+        location.reload(true);
+    }, timeoutPeriod);
+}
+</script>
+
+<table style="width:100%;" onload="JavaScript:timedRefresh(2000);">
 
     <tr>
         <td></td>

@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using SMS_OnlineDemo.Models;
 using System.Security.Cryptography;
 using System.Text;
+using System.Data.SqlClient;
 
 namespace SMS_OnlineDemo.Controllers
 {
@@ -19,7 +20,7 @@ namespace SMS_OnlineDemo.Controllers
     {
 
         DemoSMS_OnlienEntities3 db = new DemoSMS_OnlienEntities3();
-
+        String sql_con = @"Data Source=DESKTOP-JINTQRI\SQLEXPRESS;Initial Catalog=DemoSMS_Onlien;Integrated Security=True";
         public ActionResult Index()
         {
 
@@ -40,6 +41,8 @@ namespace SMS_OnlineDemo.Controllers
             return View();
         }
 
+
+        SqlConnection con;
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(string email, string password ,string status)
@@ -62,6 +65,8 @@ namespace SMS_OnlineDemo.Controllers
                         Session["Gender"] = "Female";
                     }
 
+                    
+
                     if (data.FirstOrDefault().WorkStatus == true)
                     {
                         Session["WorkStatus"] = "Students";
@@ -75,6 +80,19 @@ namespace SMS_OnlineDemo.Controllers
                     Session["Address"] = data.FirstOrDefault().Address;
                     Session["DOB"] = data.FirstOrDefault().DOB;
                     Session["UserID"] = data.FirstOrDefault().User_Id;
+
+                    Session["UserName"] = data.FirstOrDefault().UserName;
+
+
+                    con = new SqlConnection(sql_con);
+                    String sql = "update Users set Status = @Status where User_Id =" + data.FirstOrDefault().User_Id;
+                    SqlCommand command = new SqlCommand(sql, con);
+
+                    command.Parameters.AddWithValue("@Status", "Logged In");
+
+                    con.Open();
+                    command.ExecuteNonQuery();
+                    con.Close();
                     return RedirectToAction("Index");
                 }
 
@@ -122,8 +140,23 @@ namespace SMS_OnlineDemo.Controllers
         //Logout
         public ActionResult Logout()
         {
-            Session.Clear();//remove session
+            var data = db.Users;
+
+            con = new SqlConnection(sql_con);
+            String sql = "update Users set Status = @Status where User_Id =" + data.FirstOrDefault().User_Id;
+            SqlCommand command = new SqlCommand(sql, con);
+
+            command.Parameters.AddWithValue("@Status", "Logged Out");
+
+            con.Open();
+            command.ExecuteNonQuery();
+            con.Close();
+
+            Session.Clear();
             return RedirectToAction("Login");
+
+            //Session.Abandon();
+            //return RedirectToAction("Login");
         }
 
         //create md5 string

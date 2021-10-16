@@ -25,17 +25,17 @@ namespace SMS_OnlineDemo.Controllers
         public ActionResult Chat()
         {
             var userMessages = from usersChatBoard in db.ChatBoards
-                               orderby usersChatBoard.DateTimeOfMessage descending
+                               orderby usersChatBoard.DateTimeOfMessage ascending
                                select usersChatBoard;
 
             ViewBag.ChatBoardList = userMessages.ToList();
 
 
-            //var onlineUsers = from user in db.Users
-            //                  where user.Status == "Logged In"
-            //                  select user;
+            var onlineUsers = from user in db.Users
+                              where user.Status == "Logged In"
+                              select user;
 
-            //ViewBag.UsersOnlineList = onlineUsers.ToList();
+            ViewBag.UsersOnlineList = onlineUsers.ToList();
 
             return View();
         }
@@ -46,11 +46,10 @@ namespace SMS_OnlineDemo.Controllers
         public async Task<ActionResult> Chat(SMS_OnlineDemo.Models.ChatBoard chatModel)
         {
             Models.User user = new Models.User();
-
             Models.ChatBoard chatBoard = new ChatBoard();
-            //chatBoard.FromUser = Session["FromUser"].ToString();
+            chatBoard.FromUser = Session["UserName"].ToString();
             chatBoard.Message = chatModel.Message;
-            chatBoard.DateTimeOfMessage = chatModel.DateTimeOfMessage;
+            chatBoard.DateTimeOfMessage = DateTime.Now;
 
             db.ChatBoards.Add(chatBoard);
             await db.SaveChangesAsync();
