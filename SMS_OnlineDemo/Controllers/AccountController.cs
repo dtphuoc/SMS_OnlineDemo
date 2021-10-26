@@ -80,7 +80,6 @@ namespace SMS_OnlineDemo.Controllers
                     Session["Address"] = data.FirstOrDefault().Address;
                     Session["DOB"] = data.FirstOrDefault().DOB;
                     Session["UserID"] = data.FirstOrDefault().User_Id;
-
                     Session["UserName"] = data.FirstOrDefault().UserName;
 
 
